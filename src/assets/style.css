@@ -1,0 +1,19 @@
+:root {
+    --mainColor: #1e90ff;
+    --compColor: #e01010;
+    --accentColor: #EEFF00;
+  }
+
+h1{
+    color:var(--mainColor);
+    background-color: var(--compColor);
+    border: 10px solid var(--accentColor);
+    
+    margin: 100px
+}
+
+#myDiv{
+  background-color: var(--mainColor);
+  width: 100px;
+  height: 100px;
+}

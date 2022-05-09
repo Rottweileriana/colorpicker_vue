@@ -39,9 +39,9 @@
         console.log("mymethod");
       },
       changeColor(color) {
-        console.log("change color function");
         const { r, g, b, a } = color.rgba
         this.color = `rgba(${r}, ${g}, ${b}, ${a})`
+        this.$emit("changeColor", this.color)
       },
       openSucker(isOpen) {
         if (isOpen) {
@@ -53,7 +53,6 @@
         }
       },
       getColor(){
-        console.log("get color function");
         this.$emit("clicked", this.color)
       }
     }

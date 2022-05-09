@@ -1,30 +1,38 @@
 <template>
-    <div class="container" id=id>
+    <div class="container" id=id @click="getSC">
         <h4>Saved Colors</h4>
-        <div class="savedColor" id=1></div>
-        <div class="savedColor" id=2></div>
-        <div class="savedColor" id=3></div>
-        <div class="savedColor" id=4></div>
-        <div class="savedColor" id=5></div>
+        <div class="savedColor" id=1>
+            <p>MainColor</p> 
+            <input type="radio" name="cs" v-model="selectColor" value="1" @click="updateSC" />
+        </div>
+        <div class="savedColor" id=2>
+            <p>CompColor</p>    
+            <input type="radio" name="cs" v-model="selectColor" value="2" @click="updateSC" />
+        </div>    
+        <div class="savedColor" id=3>
+            <p>AccentColor</p> 
+            <input type="radio" name="cs" v-model="selectColor" value="3" @click="updateSC" />
+        </div>
     </div>
 </template>
 
 <script>
+
 export default {
     components:{
       
     },
      data () {
     return {
-      color: "string"
+        selectColor: 1
     }
-  },
- methods:{  clickHandler:function(e){
-      console.log(e.target.id);
-    },
-     getColor(color){
-         console.log(color);
-     }
+ },
+ methods: {
+     updateSC: function(){
+         this.$emit("updateSC", this.selectColor)
+         this.selectColor
+         console.log(this.selectColor);
+     },
  }
 }
 </script>
@@ -39,8 +47,13 @@ h4{
     margin: auto 10px;
 }
 .savedColor{
-    width: 200px;
+    width: 218px;
     height: 30px;
     margin: 0 auto;
+    /* background: aqua; */
+}
+
+p{
+    display: inline;
 }
 </style>
