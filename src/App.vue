@@ -1,9 +1,12 @@
 <template>
   <div id="app" >
-    <Header  />
-    <ColorPicker @clicked="getColor" @changeColor="liveUpdate" id="colorPicker"/>
-    <ColorList v-on:updateSC="updateSC($event)" @click.ctrl.exact="clickHandler"/>
-    <div>
+    <div class="containColorPicker">
+    <!-- <Header  /> -->
+    <ColorPicker @changeColor="liveUpdate"/>
+    <ColorList v-on:updateSC="updateSC($event)" @click="clickHandler" @toParent="handler"/>
+    <button @click="showColors">Show colors</button>
+    </div>
+    <div class="testerArea">
       <h1>Test</h1>
     </div>
   </div>
@@ -11,59 +14,59 @@
 </template>
 
 <script>
-import Header from '@/components/Header';
+//import Header from '@/components/Header';
 import ColorPicker from '@/components/ColorPicker';
 import ColorList from '@/components/ColorList';
 import './assets/style.css'
+
 let rgb;
-let sc
-let savedColor1;
-let savedColor2;
-let savedColor3;
+let black = "rgba(0, 0, 0, 1)";
+let sc = 0;
+let colorArray = [];
 let r = document.querySelector(':root');
 export default {
   name: 'app',
   components: {
-    Header,
+    //Header,
     ColorPicker,
     ColorList,  
   },
   mounted() {
-      savedColor1 = localStorage.getItem(1)
-      savedColor2 = localStorage.getItem(2)
-      savedColor3 = localStorage.getItem(3)
+     
+    
       
-      document.getElementById(1).style.background = savedColor1
-      document.getElementById(2).style.background = savedColor2
-      document.getElementById(3).style.background = savedColor3
   },
   methods: {
-    updateSC: function(SC){
-      console.log("value from updateSC in App "+SC);
-      sc = SC;
-    }, 
-   getColor(color){
-     rgb = color;     
-   },
-   clickHandler(e){
-      savedColor1 = localStorage.getItem(1)
-      savedColor2 = localStorage.getItem(2)
-      savedColor3 = localStorage.getItem(3)      
-      localStorage.setItem(e.target.id, rgb)
-      document.getElementById(e.target.id).style.background = rgb;
+    showColors(){  
+      for (let i = 0; i < localStorage.length -1; i++) {
+      let savedColors = document.getElementById(i);
+      let element = localStorage[i];
+      savedColors.style.background = element;
+      //document.getElementById(i).style.background = colorArray[i].colorCode;
+    }
     },
-    liveUpdate(rgb){
-      // let pressedKey = document.getElementById("colorPicker")
-      // pressedKey.addEventListener("keydown", (e) =>{
-        console.log('=============LIVE=======================');
-        console.log(sc);
-        console.log('====================================');
-      if(sc == 1){r.style.setProperty("--mainColor", rgb)}
-      if(sc == 2){r.style.setProperty("--compColor", rgb)}
-      if(sc == 3){r.style.setProperty("--accentColor", rgb)}
-      //})
-      },
-  },
+    handler(value){
+      colorArray = JSON.parse(value)
+      //console.log(colorArray);
+    },
+    updateSC(SC){
+      sc = SC;  
+    }, 
+    liveUpdate(color){
+
+      r.style.setProperty("--" + colorArray[sc].colorName, color)
+      rgb = color;
+    },
+    clickHandler(e){
+      localStorage.setItem(e.target.id, rgb)
+      colorArray[e.target.id].colorCode = rgb;
+      document.getElementById("Store").value = JSON.stringify(colorArray)
+      document.getElementById(e.target.id).style.background = rgb;
+      if(rgb == black){  
+       document.getElementById(e.target.id).style.color = "#FFF"
+      }
+    }
+  }
 }
 </script>
 
@@ -76,4 +79,17 @@ export default {
   color: #000000;
   margin-top: 60px;
 }
-</style> 
+
+.containColorPicker{  
+  display: inline-block;
+  margin: 0;
+  position: absolute;
+  left: 10px;
+}
+
+.testerArea{  
+  display: inline-block;
+  width: 500px;
+  height: 300px;
+}
+</style>

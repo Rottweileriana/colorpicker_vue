@@ -1,37 +1,39 @@
 <template>
     <div class="container" id=id @click="getSC">
         <h4>Saved Colors</h4>
-        <div class="savedColor" id=1>
-            <p>MainColor</p> 
-            <input type="radio" name="cs" v-model="selectColor" value="1" @click="updateSC" />
+        <div v-for="(item, index) in items" :key="index" class="savedColor" :id="index">
+            <li>{{item.colorName}} </li>
+            <input type="radio" :value="index" name="colorSelect" @click="updateSC" v-model="selectColor"/>
         </div>
-        <div class="savedColor" id=2>
-            <p>CompColor</p>    
-            <input type="radio" name="cs" v-model="selectColor" value="2" @click="updateSC" />
-        </div>    
-        <div class="savedColor" id=3>
-            <p>AccentColor</p> 
-            <input type="radio" name="cs" v-model="selectColor" value="3" @click="updateSC" />
-        </div>
+        <textarea type="text" id="Store" length="100" value='[{"colorName":"mainColor","colorCode":"#1e90ff"},{"colorName":"compColor","colorCode":"#e01010"},{"colorName":"accentColor","colorCode":"#EEFF00"},{"colorName":"colornr4","colorCode":"#FFF"}]'>
+        </textarea>
     </div>
 </template>
 
 <script>
+    let myJSON;
+    let JsonParse;
+   
 
 export default {
-    components:{
-      
-    },
-     data () {
+ data () {
     return {
-        selectColor: 1
+        items: [],
+        selectColor: 0
     }
  },
+    mounted(){
+        myJSON = '[{"colorName":"mainColor","colorCode":"#1e90ff"},{"colorName":"compColor","colorCode":"#e01010"},{"colorName":"accentColor","colorCode":"#EEFF00"},{"colorName":"colornr4","colorCode":"#FFF"}]'
+        let jsonData = document.getElementById("Store").value
+        //console.log(jsonData);
+        this.$emit('toParent', jsonData)
+        JsonParse = JSON.parse(myJSON)
+        this.items = JsonParse
+    },
+    
  methods: {
-     updateSC: function(){
-         this.$emit("updateSC", this.selectColor)
-         this.selectColor
-         console.log(this.selectColor);
+     updateSC(){
+        this.$emit("updateSC", this.selectColor)
      },
  }
 }
@@ -50,10 +52,19 @@ h4{
     width: 218px;
     height: 30px;
     margin: 0 auto;
-    /* background: aqua; */
 }
 
 p{
     display: inline;
+}
+
+li{
+    list-style: none;
+    display: inline;
+}
+
+textarea{  
+    width: 345px;
+    height: 60px;
 }
 </style>

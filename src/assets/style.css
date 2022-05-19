@@ -2,14 +2,18 @@
     --mainColor: #1e90ff;
     --compColor: #e01010;
     --accentColor: #EEFF00;
+    --colornr4: #FFF;
   }
 
 h1{
     color:var(--mainColor);
     background-color: var(--compColor);
     border: 10px solid var(--accentColor);
-    
-    margin: 100px
+    margin: auto;
+}
+
+.testerArea{
+  background-color: var(--colornr4);
 }
 
 #myDiv{
